@@ -47,7 +47,7 @@
         android:layout_width="101dp"
         android:layout_height="43dp"
         android:layout_marginTop="50dp"
-        android:text="Button"
+        tools:text="Mainへ戻る"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonreset" />
