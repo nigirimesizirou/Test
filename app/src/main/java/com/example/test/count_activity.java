@@ -18,6 +18,7 @@ public class count_activity extends AppCompatActivity {
     private  TextView mTextViewCountDown;
     private  Button mButtonStartPause;
     private  Button getmButtonReset;
+    private Button  returnButton;
 
     private  CountDownTimer mCountDownTimer;
     private  boolean mTimerRunning;
@@ -52,6 +53,7 @@ public class count_activity extends AppCompatActivity {
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStartPause = findViewById(R.id.button_start_pause);
         getmButtonReset = findViewById(R.id.buttonreset);
+        returnButton = findViewById(R.id.return_btn2);
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -73,6 +75,13 @@ public class count_activity extends AppCompatActivity {
         });
 
         updateCountDownText();
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
