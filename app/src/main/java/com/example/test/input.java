@@ -23,10 +23,6 @@ public class input extends AppCompatActivity {
         String str2 = editText2.getText().toString();
         long num1 = Integer.parseInt(str1);
         long num2 = Integer.parseInt(str2);
-//        int result = num1 + num2;
-        TextView textView1 = (TextView)findViewById(R.id.textView);
-//        String str3 = String.valueOf(result);
-//        textView1.setText(str3);
 
 
         //インテント作成
@@ -34,7 +30,6 @@ public class input extends AppCompatActivity {
        Intent intent = new Intent(getApplication(), count_activity.class);
 
         //入力データをセット
-//        EditText editText = findViewById(R.id.editText1);
         intent.putExtra("SEND_DATA",num1);
         intent.putExtra("SEND_DATA_2",num2);
 
