@@ -118,8 +118,9 @@ public class count_activity extends AppCompatActivity implements SensorEventList
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             // values = 5 or 0
             if (event.values[0] > 0 ) {
-
-            } else {
+            } else if (mTimerRunning == true ){
+                pauseTimer();
+            } else{
                 startTimer();
             }
         }
