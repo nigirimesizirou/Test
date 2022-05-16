@@ -23,11 +23,10 @@ public class count_activity extends AppCompatActivity implements SensorEventList
 
     private SensorManager mSensorManager;
     private Sensor mProximity;
-    private  TextView mTextViewCountDown;
-    private  Button mButtonStartPause;
-    private  Button getmButtonReset;
+    private TextView mTextViewCountDown;
+    private Button mButtonStartPause;
+    private Button getmButtonReset;
     private Button  returnButton;
-
     private  CountDownTimer mCountDownTimer;
     private  boolean mTimerRunning;
 
@@ -122,8 +121,6 @@ public class count_activity extends AppCompatActivity implements SensorEventList
 
             } else {
                 startTimer();
-            }if (event.values[0] > 0 ) {
-                pauseTimer();
             }
         }
     }
