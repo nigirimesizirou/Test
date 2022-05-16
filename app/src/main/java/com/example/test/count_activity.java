@@ -29,12 +29,12 @@ public class count_activity extends AppCompatActivity implements SensorEventList
 
     private SensorManager mSensorManager;
     private Sensor mProximity;
-    private  TextView mTextViewCountDown;
-    private  Button mButtonStartPause;
-    private  Button getmButtonReset;
+    private TextView mTextViewCountDown;
+    private Button mButtonStartPause;
+    private Button getmButtonReset;
     private Button  returnButton;
-    private SoundPool soundPool;
-    private int soundAlarm;
+
+
 
 
     private  CountDownTimer mCountDownTimer;
@@ -128,11 +128,10 @@ public class count_activity extends AppCompatActivity implements SensorEventList
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
             // values = 5 or 0
             if (event.values[0] > 0 ) {
-                //near
-                Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
-            } else {
-                //far
-                Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+            } else if (mTimerRunning == true ){
+                pauseTimer();
+            } else{
+                startTimer();
             }
         }
     }
