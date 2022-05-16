@@ -121,11 +121,13 @@ public class count_activity extends AppCompatActivity implements SensorEventList
             if (event.values[0] > 0 ) {
                 //near
                 //Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
-
             } else {
                 //far
                 //Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
                 startTimer();
+            }if{if (event.values[0] > 0 ) {
+                pauseTimer();
+            }
 
             }
         }
