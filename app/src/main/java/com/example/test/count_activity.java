@@ -2,19 +2,27 @@ package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
+
 import java.util.Locale;
 
-public class count_activity extends AppCompatActivity {
+public class count_activity extends AppCompatActivity implements SensorEventListener {
 
     private static final long START_TIME=10000;
 
-
+    private SensorManager mSensorManager;
+    private Sensor mProximity;
     private  TextView mTextViewCountDown;
     private  Button mButtonStartPause;
     private  Button getmButtonReset;
@@ -42,6 +50,13 @@ public class count_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count);
 
+        // センサーオブジェクトを取得
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        // 近接センサーのオブジェクトを取得
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+
         //MAINからの値を取得
         Intent intent = getIntent();
         long gdata= intent.getLongExtra("SEND_DATA",10000);
@@ -67,6 +82,7 @@ public class count_activity extends AppCompatActivity {
             }
         });
 
+
         getmButtonReset.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -83,6 +99,33 @@ public class count_activity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+// 近接センサーを有効
+        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 近接センサーを無効
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+            // values = 5 or 0
+            if (event.values[0] > 0 ) {
+                //near
+                Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
+            } else {
+                //far
+                Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void startTimer(){
@@ -132,4 +175,12 @@ public class count_activity extends AppCompatActivity {
     }
 
 
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
 }
+

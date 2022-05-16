@@ -2,11 +2,17 @@ package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class input extends AppCompatActivity {
 
@@ -37,3 +43,5 @@ public class input extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+
