@@ -11,9 +11,15 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import android.media.AudioAttributes;
+import android.media.SoundPool;
+import android.util.Log;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
 
 import java.util.Locale;
 
@@ -27,6 +33,9 @@ public class count_activity extends AppCompatActivity implements SensorEventList
     private  Button mButtonStartPause;
     private  Button getmButtonReset;
     private Button  returnButton;
+    private SoundPool soundPool;
+    private int soundAlarm;
+
 
     private  CountDownTimer mCountDownTimer;
     private  boolean mTimerRunning;
