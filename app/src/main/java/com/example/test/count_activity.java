@@ -15,11 +15,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.media.AudioAttributes;
-import android.media.SoundPool;
+//audio
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.Log;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
+import android.content.res.AssetFileDescriptor;
+import java.io.IOException;
 
 import java.util.Locale;
 
@@ -33,12 +34,12 @@ public class count_activity extends AppCompatActivity implements SensorEventList
     private Button mButtonStartPause;
     private Button getmButtonReset;
     private Button  returnButton;
+    private MediaPlayer mediaPlayer;
+    private CountDownTimer mCountDownTimer;
 
-
-
-
-    private  CountDownTimer mCountDownTimer;
     private  boolean mTimerRunning;
+
+    private  boolean States = false;
 
 //    private long mTimeLeftInMillis= START_TIME;
 
@@ -130,11 +131,23 @@ public class count_activity extends AppCompatActivity implements SensorEventList
             if (event.values[0] > 0 ) {
             } else if (mTimerRunning == true ){
                 pauseTimer();
+                States = false;
+
             } else{
-                startTimer();
-            }
+                if(States == false){
+                    startTimer();
+                    States = true;
+                }
+                else if(States == true){
+                    resetTimer();
+                    States = false;
+                }
+                }
         }
-    }
+        }
+
+
+
 
     private void startTimer(){
 
@@ -148,7 +161,11 @@ public class count_activity extends AppCompatActivity implements SensorEventList
             public void onFinish() {
                 mTimerRunning = false;
                 mButtonStartPause.setText("スタート");
-                getmButtonReset.setVisibility(View.INVISIBLE);
+                mButtonStartPause.setVisibility(View.INVISIBLE);
+                getmButtonReset.setVisibility(View.VISIBLE);
+                audioPlay();
+                States = true;
+
             }
         }.start();
 
@@ -160,6 +177,7 @@ public class count_activity extends AppCompatActivity implements SensorEventList
         System.out.println("一時停止処理前：" + mTimerRunning);
         mCountDownTimer.cancel();
         mTimerRunning = false;
+        States = false;
         System.out.println("一時停止処理後：" + mTimerRunning);
         mButtonStartPause.setText("スタート");
         getmButtonReset.setVisibility(View.VISIBLE);
@@ -170,6 +188,7 @@ public class count_activity extends AppCompatActivity implements SensorEventList
         updateCountDownText();
         mButtonStartPause.setVisibility(View.VISIBLE);
         getmButtonReset.setVisibility(View.INVISIBLE);
+        audioStop();
     }
 
     private void updateCountDownText(){
@@ -190,5 +209,85 @@ public class count_activity extends AppCompatActivity implements SensorEventList
 
     }
 
+//}
+
+// audio
+    private boolean audioSetup(){
+        // インタンスを生成
+        mediaPlayer = new MediaPlayer();
+
+        //音楽ファイル名, あるいはパス
+        String filePath = "music.mp3";
+
+        boolean fileCheck = false;
+
+        // assetsから mp3 ファイルを読み込み
+        try(AssetFileDescriptor afdescripter = getAssets().openFd(filePath))
+        {
+            // MediaPlayerに読み込んだ音楽ファイルを指定
+            mediaPlayer.setDataSource(afdescripter.getFileDescriptor(),
+                    afdescripter.getStartOffset(),
+                    afdescripter.getLength());
+            // 音量調整を端末のボタンに任せる
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            mediaPlayer.prepare();
+            fileCheck = true;
+            mediaPlayer.setLooping(true);//    ループ設定
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        return fileCheck;
+    }
+
+    private void audioPlay() {
+
+        if (mediaPlayer == null) {
+            // audio ファイルを読出し
+            if (audioSetup()) {
+                Toast.makeText(getApplication(), "Rread audio file", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplication(), "Error: read audio file", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            // 繰り返し再生する場合
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            // リソースの解放
+            mediaPlayer.release();
+        }
+
+        // 再生する
+        mediaPlayer.start();
+
+         //終了を検知するリスナー
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                Log.d("debug","end of audio");
+                audioStop();
+            }
+        });
+//        lambda
+        mediaPlayer.setOnCompletionListener( mp -> {
+            Log.d("debug","end of audio");
+            audioStop();
+        });
+
+    }
+
+    private void audioStop() {
+        // 再生終了
+        mediaPlayer.stop();
+        // リセット
+        mediaPlayer.reset();
+        // リソースの解放
+        mediaPlayer.release();
+
+        mediaPlayer = null;
+    }
 }
 
+//    }
+//}
