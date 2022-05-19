@@ -156,6 +156,7 @@ public class count_activity extends AppCompatActivity implements SensorEventList
             public void onTick(long millisUntilFinished) {
                 data1 = millisUntilFinished;
                 updateCountDownText();
+                States = false;
             }
             @Override
             public void onFinish() {
@@ -188,7 +189,9 @@ public class count_activity extends AppCompatActivity implements SensorEventList
         updateCountDownText();
         mButtonStartPause.setVisibility(View.VISIBLE);
         getmButtonReset.setVisibility(View.INVISIBLE);
-        audioStop();
+        if(States == true) {
+            audioStop();
+        }
     }
 
     private void updateCountDownText(){
